@@ -14,18 +14,6 @@ data<-transform(data, date=ymd(date))
 
 ```r
 library(plyr)
-```
-
-```
-## 
-## Attaching package: 'plyr'
-## 
-## The following object is masked from 'package:lubridate':
-## 
-##     here
-```
-
-```r
 dataPerDay<-ddply(data, .(date), summarize, stepsSum = sum(steps, na.rm=TRUE))
 hist(dataPerDay$stepsSum)
 ```
@@ -49,6 +37,7 @@ median(dataPerDay$stepsSum)
 ```
 
 ## What is the average daily activity pattern?
+###Plot
 
 ```r
 dataPerInterval<-ddply(data, .(interval), summarize, stepsMean = mean(steps, na.rm=TRUE))
@@ -57,7 +46,20 @@ plot(x=dataPerInterval$interval, y=dataPerInterval$stepsMean, type = "l")
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
+###Interval with maximum steps
+
+```r
+dataPerInterval[which(dataPerInterval$stepsMean == max(dataPerInterval$stepsMean)),1]
+```
+
+```
+## [1] 835
+```
 ## Imputing missing values
+
+How many NAs are there?
+
+
 
 ```r
 sum(is.na(data$steps))
@@ -92,7 +94,7 @@ ggplot(comparison, aes(x=stepsSum, fill = kind)) +
     geom_histogram(alpha = 0.2,  binwidth = diff(range(comparison$stepsSum))/10)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
 ```r
 c(mean(imputedDataPerDay$stepsSum),mean(dataPerDay$stepsSum))
@@ -122,4 +124,4 @@ ggplot(imputedDataPerInterval, aes(x=interval, y=steps, color = day)) +
     geom_line()
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 

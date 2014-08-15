@@ -19,12 +19,21 @@ median(dataPerDay$stepsSum)
 ```
 
 ## What is the average daily activity pattern?
+###Plot
 ```{r}
 dataPerInterval<-ddply(data, .(interval), summarize, stepsMean = mean(steps, na.rm=TRUE))
 plot(x=dataPerInterval$interval, y=dataPerInterval$stepsMean, type = "l")
 ```
 
+###Interval with maximum steps
+```{r}
+dataPerInterval[which(dataPerInterval$stepsMean == max(dataPerInterval$stepsMean)),1]
+```
 ## Imputing missing values
+
+How many NAs are there?
+
+
 ```{r}
 sum(is.na(data$steps))
 ```
